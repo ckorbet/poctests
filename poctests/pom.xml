@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>poctests</groupId>
+	<artifactId>poctests</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>poctests</name>
+	<description>POC of tests Continuos Integration</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.source.version>1.8</java.source.version>
+		<java.target.version>1.8</java.target.version>
+		<sniffer.jdk.version>java18</sniffer.jdk.version>
+		<java.compile.debug>true</java.compile.debug>
+		<java.compile.optimize>false</java.compile.optimize>
+		<java.compile.deprecation>false</java.compile.deprecation>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+	    <profile>
+	        <id>SlowTests</id>
+	        <properties>
+	            <testcase.groups>poctests.category.SlowTestCategory</testcase.groups>
+	        </properties>
+	    </profile>
+	    <profile>
+	        <id>FastTests</id>
+	        <properties>
+	            <testcase.groups>poctests.category.FastTestCategory</testcase.groups>
+	        </properties>
+	    </profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${java.source.version}</source>
+					<target>${java.target.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.1.201405082137</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+				<configuration>
+	                <groups>${testcase.groups}</groups>
+	            </configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
